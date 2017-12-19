@@ -9,7 +9,7 @@ namespace SuperMarioGalaxy
     public class Player : MonoBehaviour
     {
         public float speed = 20f;
-        public float groundDistance = 3f;
+        public float maxVelocity = 10f;
 
         private Rigidbody rigid;
         private GravityNormal body;
@@ -18,10 +18,7 @@ namespace SuperMarioGalaxy
         void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position, transform.position + force);
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, transform.position + -transform.up * groundDistance);
+            Gizmos.DrawLine(transform.position, transform.position + force);            
         }
 
         // Use this for initialization
@@ -38,18 +35,11 @@ namespace SuperMarioGalaxy
             GizmosGL.AddLine(transform.position, transform.position + force, 0.3f, 0.3f, Color.blue, Color.blue);
             rigid.AddForce(force * speed);
 
-            if (body.isGrounded)
+            // If velocity reache3s higher than max velocity
+            if (rigid.velocity.magnitude > maxVelocity)
             {
-                Vector3 groundHitPos = body.HitPoint;
-                GizmosGL.AddSphere(groundHitPos, 1f, null, Color.red);
-                float distanceToGround = Vector3.Distance(transform.position, groundHitPos);
-
-                GizmosGL.AddSphere(groundHitPos + body.Gravity.normalized * distanceToGround, 1f, null, Color.blue);
-
-                if (distanceToGround > groundDistance)
-                {
-                    transform.position = groundHitPos + body.Gravity.normalized * distanceToGround;
-                }
+                // Cap that shit bih
+                rigid.velocity = rigid.velocity.normalized * maxVelocity;
             }
         }
     }

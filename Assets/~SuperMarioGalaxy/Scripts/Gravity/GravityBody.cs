@@ -7,15 +7,16 @@ namespace SuperMarioGalaxy
     [RequireComponent(typeof(Rigidbody))]
     public class GravityBody : MonoBehaviour
     {
+        public bool useGravity = true;
         public virtual Vector3 Gravity
         {
             get
             {
-                // If there are no attractions
-                if (attractors.Count == 0)
+                // Is useGravity false?
+                if (!useGravity)
                 {
-                    // Return default gravity
-                    return Physics.gravity;
+                    // Return zero gs
+                    return Vector3.zero;
                 }
                 // Reset gravity before calculating
                 Vector3 gravity = Vector3.zero;
@@ -29,10 +30,26 @@ namespace SuperMarioGalaxy
                 return gravity;
             }
         }
+        public Vector3 Velocity
+        {
+            get
+            {
+                return rigid.velocity;
+            }
+            set
+            {
+                rigid.velocity = value;
+            }
+        }
 
         private List<GravityAttractor> attractors = new List<GravityAttractor>();
         private Rigidbody rigid;
         private Vector3 normal;
+
+        public void AddForce(Vector3 velocity, ForceMode forceMode = ForceMode.Acceleration)
+        {
+            rigid.AddForce(velocity, forceMode);
+        }
 
         // Use this for initialization
         void Start()

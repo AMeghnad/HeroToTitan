@@ -8,7 +8,7 @@ namespace SuperMarioGalaxy
     {
         public float force = -10f;
         public float rayDistance = 5f;
-        public LayerMask ignoreLayers;
+        public LayerMask hitLayers;
         public RaycastHit groundHit;
         public bool isGrounded = false;
 
@@ -25,7 +25,7 @@ namespace SuperMarioGalaxy
         void FixedUpdate()
         {
             groundRay = new Ray(transform.position, -transform.up);
-            RaycastHit[] hits = Physics.RaycastAll(groundRay, rayDistance, ~ignoreLayers);
+            RaycastHit[] hits = Physics.RaycastAll(groundRay, rayDistance, hitLayers);
             foreach (RaycastHit hit in hits)
             {
                 // Is the hit not ourself?
