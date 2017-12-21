@@ -7,6 +7,7 @@ namespace StarFox
     public class LocalUserControl : MonoBehaviour
     {
         public ArwingController controller;
+        public ArwingShoot weapon;
 
         // Update is called once per frame
         void Update()
@@ -17,7 +18,10 @@ namespace StarFox
             controller.Move(inputH, inputV);
 
             // Shoot laser
-
+            if (Input.GetMouseButton(0))
+            {
+                weapon.Shoot();
+            }
             // Shoot pulse
         }
     }
