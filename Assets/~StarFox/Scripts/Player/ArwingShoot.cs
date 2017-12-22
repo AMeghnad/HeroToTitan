@@ -38,10 +38,18 @@ namespace StarFox
             return clone;
         }
 
+        public bool canShoot
+        {
+            get
+            {
+                Laser laserToShoot = laserPrefabs[currentLaser];
+                return shootTimer >= laserToShoot.shootRate;
+            }
+        }
+
         public GameObject Shoot()
         {
-            Laser laserToShoot = laserPrefabs[currentLaser];
-            if (shootTimer >= laserToShoot.shootRate)
+            if (canShoot)
             {
                 shootTimer = 0f;
                 return FireLaser();
